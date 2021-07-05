@@ -49,14 +49,11 @@ jobs:
     steps:
       - name: install compiler
         run: sudo apt install $( echo "${{ matrix.compiler}}" | sed 's/\+/c/g' )
-      - name: use compiler
-        run: |
-         export CXX=${{ matrix.compiler}}
       - name: install python dependencies
         run: python -m pip install scons
       - uses: actions/checkout@v2
       - name: build
-        run: scons -j 2 SG_PYTHON=0 RUN_CPP_EXAMPLES=1 CPPFLAGS=-Werror
+        run: scons -j 2 SG_PYTHON=0 RUN_CPP_EXAMPLES=1 CXX=${{ matrix.compiler}} CPPFLAGS=-Werror
   linux-medium:
     runs-on: ubuntu-latest
     steps:
